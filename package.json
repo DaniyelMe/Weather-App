@@ -1,0 +1,20 @@
+{
+  "name": "daniyel-menda-04-06-20",
+  "version": "1.0.0",
+  "description": "Simple SPA weather website",
+  "main": "main.js",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DaniyelMe/Daniyel-Menda-04-06-20.git"
+  },
+  "author": "Daniyel Menda",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/DaniyelMe/Daniyel-Menda-04-06-20/issues"
+  },
+  "homepage": "https://github.com/DaniyelMe/Daniyel-Menda-04-06-20#readme"
+}
