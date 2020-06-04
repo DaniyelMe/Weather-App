@@ -5,7 +5,10 @@
   "main": "main.js",
   "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "cleanup": "node src/utils/cleanup.js public .cache",
+    "dev": "npm run cleanup && parcel src/index.html -d public",
+    "build": "npm run cleanup && parcel build src/index.html -d public"
   },
   "repository": {
     "type": "git",
@@ -16,5 +19,16 @@
   "bugs": {
     "url": "https://github.com/DaniyelMe/Daniyel-Menda-04-06-20/issues"
   },
-  "homepage": "https://github.com/DaniyelMe/Daniyel-Menda-04-06-20#readme"
+  "homepage": "https://github.com/DaniyelMe/Daniyel-Menda-04-06-20#readme",
+  "dependencies": {
+    "vue": "^2.6.11",
+    "vue-router": "^3.3.2",
+    "vuex": "^3.4.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.1.0",
+    "less": "^3.11.2",
+    "parcel-bundler": "^1.12.4"
+  }
 }
