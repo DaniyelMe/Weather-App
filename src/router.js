@@ -10,6 +10,11 @@ export default new Router({
 			name: 'home',
 			path: '/',
 			component: () => import('./components/Home.vue')
+		},
+		{
+			name: 'favorites',
+			path: '/favorites',
+			component: () => import('./components/Favorites.vue')
 		}
 	]
 });
