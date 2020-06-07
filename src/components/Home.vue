@@ -42,7 +42,7 @@ export default {
 			let fiveDays = [];
 
 			// From today till end of the week.
-			for (let i = todayIndex; i < this.daysOfWeek.length < 5; i++) fiveDays.push(this.daysOfWeek[i]);
+			for (let i = todayIndex; i < this.daysOfWeek.length || fiveDays.length < 5; i++) fiveDays.push(this.daysOfWeek[i]);
 
 			// From the start of the week till we have 5 days.
 			for (let i = 0; fiveDays.length < 5; i++) fiveDays.push(this.daysOfWeek[i]);
