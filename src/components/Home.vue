@@ -1,21 +1,6 @@
 <template>
   <div class="home">
-    <header>
-      <router-link :to="{ name: 'home' }" class="logo">
-        <img src alt="weather app logo" />
-      </router-link>
-
-      <ol>
-        <li>
-          <router-link :to="{ name: 'home' }">Home</router-link>
-        </li>
-
-        <li>
-          <router-link :to="{name: 'home'}">Favorites</router-link>
-        </li>
-      </ol>
-    </header>
-
+		<SiteHeader></SiteHeader>
     <div class="search-bar">
       <span>ICON</span>
       <span>Search Bar</span>
@@ -41,7 +26,9 @@
 </template>
 
 <script>
+import SiteHeader from './SiteHeader';
 export default {
+	components: { SiteHeader },
   data() {
     return {
       daysOfWeek: [
