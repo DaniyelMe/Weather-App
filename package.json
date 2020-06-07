@@ -1,7 +1,7 @@
 {
   "name": "daniyel-menda-04-06-20",
   "version": "1.0.0",
-  "description": "Simple SPA weather website",
+  "description": "Simple SPA weather webapp",
   "main": "main.js",
   "private": true,
   "scripts": {
@@ -26,6 +26,9 @@
     "vuex": "^3.4.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.10.2",
+    "@babel/plugin-transform-runtime": "^7.10.1",
+    "@babel/runtime": "^7.10.2",
     "@vue/component-compiler-utils": "^3.1.2",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.1.0",
