@@ -42,7 +42,6 @@ const searchAutoComplete = async function(inputVal) {
 	return await fetch(`${url}${params}`)
 		.then(res => res.json())
 		.then(out => {
-			console.log('out', out);
 			return out;
 		});
 };
@@ -50,14 +49,14 @@ const searchAutoComplete = async function(inputVal) {
 /* Forecast API */
 
 // Returns an array of daily forecasts for the next 5 days for a specific location.
-const fiveDaysForecast = async function(inputVal) {
+const fiveDaysForecast = async function(key) {
 	const url = 'https://dataservice.accuweather.com/forecasts/v1/daily/5day/';
-	const params = `${inputVal}?apikey=${apiKey}&language=en-us&metric=true HTTP/1.1`;
+	// const isDetailed = false ? '' : '&details=true';
+	const params = `${key}?apikey=${apiKey}&language=en-us&details=true&metric=true HTTP/1.1`;
 
 	return await fetch(`${url}${params}`)
 		.then(res => res.json())
 		.then(out => {
-			console.log('out', out);
 			return out;
 		});
 };

@@ -1,0 +1,50 @@
+
+.site-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	height: 80px;
+
+	background: transparent;
+	box-shadow: -1px 2px 8px 0px rgba(0,0,0,0.3);
+
+
+	ol {
+		display: flex;
+		justify-content: space-between;
+		text-align: center;
+
+		a {
+			position: relative;
+			display: inline-block;
+			margin-right: 20px;
+			padding: 12px;
+			box-sizing: border-box;
+			box-shadow: 0 2px 3px rgb(58, 97, 155);
+			border-radius: 5px;
+			width: 90px;
+			background-color: #6ba6fb;
+			border: 1px solid transparent;
+
+			&:hover {
+				border: 1px solid rgb(58, 97, 155);
+			}
+		}
+
+		.active-path {
+			// border: 1px solid rgb(58, 97, 155);
+			box-shadow: 0 1px 5px rgba(255, 255, 255, 0.2);
+		}
+	}
+}
+
+.logo {
+	margin-left: 20px;
+	display: inline-block;
+	padding: 10px;
+	img {
+		display: block;
+		max-width: 60px;
+		width: 100%;
+	}
+}

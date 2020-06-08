@@ -1,5 +1,5 @@
 <template>
-	<div class="home">
+	<div class="container">
 		<SiteHeader></SiteHeader>
 
 		<div class="search-bar">

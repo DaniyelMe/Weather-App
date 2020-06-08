@@ -8,7 +8,7 @@ async function rm(filePath) {
 		const stats = await fs.lstat(absolutePath);
 		if (stats.isDirectory()) {
 			const files = await fs.readdir(absolutePath);
-			const promisesArray = files.map((subFilePath) => {
+			const promisesArray = files.map(subFilePath => {
 				return rm(path.join(filePath, subFilePath));
 			});
 
@@ -24,4 +24,4 @@ async function rm(filePath) {
 }
 
 const pathsToDelete = process.argv.slice(2);
-pathsToDelete.map((path) => rm(path));
+pathsToDelete.map(path => rm(path));
