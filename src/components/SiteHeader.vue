@@ -1,6 +1,6 @@
 <template>
-	<header class="site-header">
-		<router-link :to="{ name: 'home' }" class="logo">
+	<header class="site-header nonselected">
+		<router-link :to="{ name: 'home' }" class="logo nonselected">
 			<img src="../assets/logo.svg" alt="weather app logo" />
 		</router-link>
 
@@ -29,4 +29,3 @@ export default {
 };
 </script>
 
-<style></style>
