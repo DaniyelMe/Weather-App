@@ -1,0 +1,60 @@
+.sun {
+	svg {
+		display: block;
+
+		animation: spin 15s ease-in-out infinite;
+		animation-name: spinIt;
+	}
+}
+
+@keyframes spinIt {
+	100% {
+		transform: rotate(-360deg);
+	}
+}
+
+.rain {
+	svg {
+		display: block;
+	}
+}
+
+.drop {
+	animation: forwards rainDrops1 3s ease-in-out infinite;
+	animation-name: rainDrops1;
+}
+
+@keyframes rainDrops1 {
+	0% {
+		opacity: 1;
+	}
+	50% {
+		transform: translateY(5px);
+		opacity: 0;
+	}
+	100% {
+		opacity: 0;
+
+		transform: translateY(0px);
+	}
+}
+
+.drop2 {
+	animation: forwards raindrops 2.2s ease-in-out infinite;
+	animation-name: rainDrops2;
+}
+
+@keyframes rainDrops2 {
+	0% {
+		opacity: 1;
+	}
+	50% {
+		transform: translateY(8px);
+		opacity: 0;
+	}
+	100% {
+		opacity: 0;
+
+		transform: translateY(0px);
+	}
+}
