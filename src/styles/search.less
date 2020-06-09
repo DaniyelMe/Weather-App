@@ -1,0 +1,79 @@
+.search-container {
+	display: flex;
+	justify-content: center;
+}
+
+.add-city {
+	display: flex;
+	justify-content: space-around;
+	transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+	div {
+		span {
+			border: 1px solid;
+			border-radius: 50px;
+		}
+	}
+}
+
+.add-location {
+	span {
+		color: @grayLight;
+		font-size: 2rem;
+	}
+}
+
+.open-add-city {
+	width: 100%;
+	opacity: 1;
+}
+
+.search {
+	position: relative;
+	opacity: 1;
+
+	&-form {
+		background: transparent;
+		outline: none;
+		border: none;
+		width: 100%;
+	}
+
+	&-input {
+		color: white;
+
+		border-bottom: 1px solid @primary;
+		width: 100%;
+		font-weight: 400;
+	}
+}
+
+.search-form-input {
+	border-bottom: 1px solid white;
+	padding: 5px 1rem;
+	font-weight: 400;
+}
+
+.close-popup {
+	position: absolute;
+	right: -35px;
+
+	span {
+		color: @errorColor;
+		font-size: 2rem;
+	}
+}
+
+.add-city-animated {
+	animation-duration: 1s;
+	animation-fill-mode: both;
+}
+
+@keyframes switch {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
