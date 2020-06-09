@@ -84,13 +84,18 @@ const mutations = {
 
 		// From today till end of the week.
 		for (let i = todayIndex; i < 7 && fiveDays.length < 5; i++) {
-			const { Temperature, Date, Day, Night } = forecast[j++];
+			const { Temperature, Date, Day, Night, Link } = forecast[j++];
 			fiveDays.push({
 				dayName: daysOfWeek[i],
-				temperature: { max: Temperature.Maximum.Value, min: Temperature.Minimum.Value, type: Temperature.Unit },
+				temperature: {
+					max: Temperature.Maximum.Value,
+					min: Temperature.Minimum.Value,
+					type: Temperature.Unit
+				},
 				date: parseDate(Date),
 				day: Day,
-				night: Night
+				night: Night,
+				link: Link
 			});
 		}
 

@@ -24,10 +24,29 @@
 	}
 }
 
+// Larger than 900px
+@media only screen and (min-width: 900px) {
+	.day-card {
+		animation: switch 1s forwards cubic-bezier(0.785, 0.135, 0.15, 0.86);
+		width: 10rem;
+		flex-flow: column;
+	}
+
+	.sun,
+	.rain {
+		svg {
+			width: 10rem;
+			height: 10rem;
+		}
+	}
+}
+
+// Smaller than 900px
 @media only screen and (max-width: 900px) {
 	.day-card {
-		width: 100%;
+		width: fit-content;
 		height: auto;
+		flex-flow: column;
 		animation: switch 1s forwards cubic-bezier(0.785, 0.135, 0.15, 0.86);
 	}
 
@@ -39,17 +58,15 @@
 		}
 	}
 }
-
-@media only screen and (min-width: 900px) {
+// Smaller than 480px
+@media only screen and (max-width: 480px) {
 	.day-card {
+		width: 100%;
+		height: auto;
+		flex-flow: row;
 		animation: switch 1s forwards cubic-bezier(0.785, 0.135, 0.15, 0.86);
 	}
-	
-	.sun,
-	.rain {
-		svg {
-			width: 10rem;
-			height: 10rem;
-		}
+	.day-description {
+		width: 50%;
 	}
 }

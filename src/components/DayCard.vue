@@ -1,16 +1,27 @@
 <template>
-	<div class="day-card nonselected">
-		<h2 class="day-card-name">{{ dayName }}</h2>
-		<p class="day-card-date">{{ date }}</p>
-		<h1 class="day-card-degree">
-			<span>{{ tempMin }} - {{ tempMax }}</span>
-			<span class="day-card-degree-type">°F</span>
-		</h1>
-		<span>{{ phrase }}</span>
-	</div>
+	<a :href="link" class="day-card nonselected">
+		<span>
+			<h2 class="day-card-name">{{ dayName }}</h2>
+			<p class="day-card-date">{{ date }}</p>
+			<h1 class="day-card-degree">
+				<span>{{ tempMin }} - {{ tempMax }}</span>
+				<span class="day-card-degree-type">°F</span>
+			</h1>
+		</span>
+
+		<div class="day-description">
+			<span>{{ phrase }}</span>
+
+			<figure class="weather-icon">
+				<img :src="icon" :alt=" phrase + `image`" />
+			</figure>
+		</div>
+	</a>
 </template>
 
 <script>
+import icons from '../utils/icons.js';
+
 export default {
 	props: ['dayData'],
 	data() {
@@ -19,7 +30,9 @@ export default {
 			date: '',
 			tempMin: '',
 			tempMax: '',
-			phrase: ''
+			phrase: '',
+			icon: '',
+			link: '#'
 		};
 	},
 	created() {
@@ -28,6 +41,8 @@ export default {
 		this.tempMin = this.dayData.temperature.min;
 		this.tempMax = this.dayData.temperature.max;
 		this.phrase = this.dayData.day.IconPhrase;
+		this.icon = icons.getIcons(this.dayData.day.Icon);
+		this.link = this.dayData.link;
 	}
 };
 </script>
