@@ -1,4 +1,5 @@
 import geoApi from '../../utils/geoApi.js';
+import tempeConvert from '../../utils/tempeConvert.js';
 
 const state = {
 	position: { latitude: '32.0853', longitude: '34.7818' },
@@ -11,12 +12,15 @@ const state = {
 
 	status: []
 	theme: 'light-mode'
+	theme: 'light-mode',
+	degree: true
 };
 
 const getters = {
 	getFavorites: state => state.favorites,
 	getFiveDaysForecast: state => state.fiveDaysForecast,
-	getCurrentPosition: state => state.currentPosition
+	getCurrentPosition: state => state.currentPosition,
+	getDegree: state => state.degree
 };
 
 const actions = {
@@ -86,6 +90,40 @@ const mutations = {
 		// From today till end of the week.
 		for (let i = todayIndex; i < 7 && fiveDays.length < 5; i++) {
 			const { Temperature, Date, Day, Night, Link } = forecast[j++];
+
+			// make sure it's celsius
+			if (Temperature.Maximum.Unit == 'F') {
+				Temperature.Maximum.Value = tempeConvert.fahrenheitToCelsius(Temperature.Maximum.Value);
+				Temperature.Minimum.Value = tempeConvert.fahrenheitToCelsius(Temperature.Minimum.Value);
+			}
+
+			fiveDays.push({
+				dayName: daysOfWeek[i],
+				temperature: { max: Temperature.Maximum.Value, min: Temperature.Minimum.Value, type: Temperature.Unit },
+				date: parseDate(Date),
+				day: Day,
+				night: Night,
+				link: Link
+			});
+		}
+
+		// From the start of the week till we have 5 days.
+		for (let i = 0; fiveDays.length < 5; i++) {
+			const { Temperature, Date, Day, Night, Link } = forecast[j++];
+
+			// make sure it's celsius
+			if (Temperature.Maximum.Unit == 'F') {
+				Temperature.Maximum.Value = tempeConvert.fahrenheitToCelsius(Temperature.Maximum.Value);
+				Temperature.Minimum.Value = tempeConvert.fahrenheitToCelsius(Temperature.Minimum.Value);
+			}
+
+			fiveDays.push({
+				dayName: daysOfWeek[i],
+				temperature: { max: Temperature.Maximum.Value, min: Temperature.Minimum.Value, type: Temperature.Unit },
+				date: parseDate(Date),
+				day: Day,
+				night: Night,
+				link: Link
 			fiveDays.push({
 				dayName: daysOfWeek[i],
 				temperature: {
