@@ -10,6 +10,7 @@ const state = {
 	favorites: [],
 
 	status: []
+	theme: 'light-mode'
 };
 
 const getters = {
