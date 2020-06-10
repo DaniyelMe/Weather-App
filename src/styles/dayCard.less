@@ -7,7 +7,7 @@
 	padding: 4px;
 
 	color: black;
-
+	background: @white;
 	cursor: pointer;
 
 	transition: all ease-in-out 300ms;
@@ -17,11 +17,14 @@
 		background: @primary;
 	}
 }
+.day-info {
+	width: 100%;
+	color: #555;
+}
 
 .day-card-name {
 	margin: 0;
 	font-size: 1.5rem;
-	font-style: italic;
 }
 
 .day-card-date {
@@ -31,23 +34,41 @@
 }
 
 .day-card-degree {
-	color: white;
+	color: #292929;
+	display: flex;
+	position: relative;
+	flex-direction: inherit;
+	align-items: end;
+	justify-content: center;
+	font-weight: 300;
+
+	span:first-of-type {
+		font-size: 38px;
+	}
 }
 
 .day-card-degree-type {
 	font-size: 14px;
-	margin: 10px 0;
+	margin: 7px 0;
+	display: flex;
+	position: m;
+	justify-content: space-evenly;
 }
 
 .day-description {
+	display: flex;
+	justify-content: space-evenly;
+	flex-direction: column;
 	width: 100%;
-}
+	align-items: center;
 
-.weather-icon {
-	margin: 0;
-	padding: 0;
-	width: 100%;
-	img {
-		width: 100%;
+	figure {
+		margin: 0;
+		padding: 0;
+	}
+
+	span {
+		margin-top: -5px;
+		color: #555;
 	}
 }

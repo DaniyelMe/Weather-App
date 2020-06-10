@@ -1,20 +1,20 @@
 <template>
 	<a :href="link" class="day-card nonselected">
-		<span>
+		<span class="day-info">
 			<h2 class="day-card-name">{{ dayName }}</h2>
 			<p class="day-card-date">{{ date }}</p>
 			<h1 class="day-card-degree">
-				<span>{{ tempMin }} - {{ tempMax }}</span>
+				<span>{{ tempMin }}-{{ tempMax }}</span>
 				<span class="day-card-degree-type">°F</span>
 			</h1>
 		</span>
 
-		<div class="day-description">
-			<span>{{ phrase }}</span>
-
-			<figure class="weather-icon">
-				<img :src="icon" :alt=" phrase + `image`" />
+		<div class="day-description weather-icon">
+			<figure>
+				<img :src="icon" :alt="phrase + `image`" />
 			</figure>
+
+			<span>{{ phrase }}</span>
 		</div>
 	</a>
 </template>

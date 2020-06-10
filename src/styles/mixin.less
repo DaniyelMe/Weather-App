@@ -25,11 +25,17 @@
 }
 
 // Larger than 900px
-@media only screen and (min-width: 900px) {
+@media only screen and (min-width: 980px) {
 	.day-card {
 		animation: switch 1s forwards cubic-bezier(0.785, 0.135, 0.15, 0.86);
 		width: 10rem;
+		padding: 10px 0 12px;
+
 		flex-flow: column;
+	}
+
+	.add-city {
+		margin-right: 30px;
 	}
 
 	.sun,
@@ -42,12 +48,23 @@
 }
 
 // Smaller than 900px
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 980px) {
 	.day-card {
-		width: fit-content;
+		width: 80%;
 		height: auto;
-		flex-flow: column;
 		animation: switch 1s forwards cubic-bezier(0.785, 0.135, 0.15, 0.86);
+	}
+
+	.weather-icon {
+		figure {
+			width: 100%;
+			img {
+				width: 50%;
+			}
+		}
+	}
+	.add-city {
+		margin-right: 30px;
 	}
 
 	.sun,
@@ -61,12 +78,20 @@
 // Smaller than 480px
 @media only screen and (max-width: 480px) {
 	.day-card {
-		width: 100%;
+		// width: 100%;
 		height: auto;
 		flex-flow: row;
 		animation: switch 1s forwards cubic-bezier(0.785, 0.135, 0.15, 0.86);
 	}
 	.day-description {
 		width: 50%;
+	}
+
+	.add-city {
+		margin-right: 50px;
+
+		div {
+			display: none;
+		}
 	}
 }
