@@ -45,7 +45,7 @@ const getIcons = function(id) {
 		'https://developer.accuweather.com/sites/default/files/43-s.png',
 		'https://developer.accuweather.com/sites/default/files/44-s.png'
 	];
-	return icons[id];
+	return icons[id - 1];
 };
 
 export default {
