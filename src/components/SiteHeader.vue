@@ -11,9 +11,10 @@
 				</li>
 
 				<li>
-					<router-link :to="{ name: 'favorites' }" :class="{ 'active-path': path == 'favorites' }"
-						>Favorites</router-link
-					>
+					<router-link
+						:to="{ name: 'favorites' }"
+						:class="{ 'active-path': path == 'favorites' }"
+					>Favorites</router-link>
 				</li>
 			</ol>
 		</div>
@@ -30,7 +31,7 @@
 <script>
 export default {
 	computed: {
-		path: function() {
+		path() {
 			return this.$route.name;
 		}
 	}
