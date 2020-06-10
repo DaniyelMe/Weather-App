@@ -1,4 +1,5 @@
-const apiKey = 'YFWtanEKLIJf8jbhQFxpJ1DInelAzxVY';
+// const apiKey = 'YFWtanEKLIJf8jbhQFxpJ1DInelAzxVY';
+const apiKey = 'Qreim9VCvrWQGiTlRBoTZAHe85gGIGwD';
 
 /* Locations API */
 

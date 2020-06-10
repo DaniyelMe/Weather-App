@@ -56,35 +56,49 @@ export default {
 		};
 	},
 	methods: {
-		addToFav: function() {
-			// this.$store.dispatch('addFavorite');
-		}
-	},
-	computed: {
-		...mapGetters(['getFiveDaysForecast', 'getCurrentPosition'])
-	},
+		addToFav() {
+			this.activeLove = !this.activeLove;
+			const location = {
+				name: this.location.name,
+				country: this.location.country,
+				key: this.getCurrentPosition.key,
+				action: this.activeLove
+			};
+
+			this.$store.commit('addFavorite', location);
+		},
 
 		loadData() {
+			const position = this.$store.state.app.currentPosition;
+
+			this.location.name = this.getCurrentPosition.name;
+			this.location.country = this.getCurrentPosition.country.name;
+
+			this.$store.state.app.favorites.map(fav => {
+				if (fav.key == position.key) this.activeLove = true;
+			});
+
 			if (this.getFiveDaysForecast > 0) {
 				this.date = this.getFiveDaysForecast[0].date;
 				this.tempMin = this.getFiveDaysForecast[0].temperature.max;
 				this.tempMax = this.getFiveDaysForecast[0].temperature.min;
 				this.phrase = this.getFiveDaysForecast[0].day.IconPhrase;
-				this.location.name = this.getCurrentPosition.name;
-				this.location.country = this.getCurrentPosition.country.name;
-				this.location.name = position.name;
-				this.location.country = position.country.name;
 			}
 		}
 	},
 	computed: {
 		...mapGetters(['getFiveDaysForecast', 'getCurrentPosition', 'getFavorites', 'getDegree']),
 		getDegree() {
+			if (this.getFiveDaysForecast < 1) return;
+
 			if (!this.$store.state.app.degree) {
+				console.log('loadData -> this.getFiveDaysForecast[0]', this.getFiveDaysForecast[0]);
+
 				this.tempMin = tempeConvert.celsiusToFahrenheit(this.getFiveDaysForecast[0].temperature.min);
 				this.tempMax = tempeConvert.celsiusToFahrenheit(this.getFiveDaysForecast[0].temperature.max);
 				return false;
 			}
+
 			this.tempMin = this.getFiveDaysForecast[0].temperature.min;
 			this.tempMax = this.getFiveDaysForecast[0].temperature.max;
 			return true;
@@ -96,7 +110,6 @@ export default {
 		}
 	},
 	created() {
-		const position = this.$store.state.app.currentPosition;
 		this.loadData();
 	}
 };
