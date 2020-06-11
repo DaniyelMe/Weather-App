@@ -74,7 +74,8 @@ export default {
 			this.location.name = this.getCurrentPosition.name;
 			this.location.country = this.getCurrentPosition.country.name;
 
-			this.activeLove = this.$store.state.app.favoritesSet.has(position.key);
+			console.log('loadData -> this.$store.state.app.', this.$store.state.app);
+			this.activeLove = this.$store.state.app.favoritesSet[position.key];
 
 			if (this.fiveDaysForecast.length > 0) {
 				this.date = this.fiveDaysForecast[0].date;

@@ -9,9 +9,10 @@ const state = {
 	fiveDaysForecast: [],
 
 	favorites: [],
-	favoritesSet: new Set(),
+	favoritesSet: {},
 
 	searchResult: '',
+
 
 	isFindCity: false,
 	theme: 'light-mode',
@@ -125,7 +126,7 @@ const actions = {
 	fetchSearchResult({ commit, state }, inputVal) {
 		return geoApi.searchAutoComplete(inputVal).then(result => {
 			return result.map(local => {
-				if (state.favoritesSet.has(parseInt(local.Key))) local.fav = true;
+				if (state.favoritesSet[parseInt(local.Key)]) local.fav = true;
 
 				return local;
 			});
@@ -156,10 +157,11 @@ const mutations = {
 		const action = location.action;
 		//remove the action property from the object
 		delete location['action'];
+		if (state.favoritesSet[location.key]) return;
 
 		if (action) {
 			state.favorites.push(location);
-			state.favoritesSet.add(location.key);
+			state.favoritesSet[location.key] = true;
 		} else {
 			const removeIndex = state.favorites
 				.map(fav => {
@@ -167,7 +169,7 @@ const mutations = {
 				})
 				.indexOf(location.key);
 			state.favorites.splice(removeIndex, 1);
-			state.favoritesSet.delete(location.key);
+			delete state.favoritesSet[location.key];
 		}
 	}
 };
