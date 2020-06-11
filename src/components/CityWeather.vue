@@ -105,11 +105,12 @@ export default {
 	watch: {
 		getFiveDaysForecast() {
 			this.fiveDaysForecast = this.getFiveDaysForecast;
-			this.loadData();
 		}
 	},
 	created() {
 		this.fiveDaysForecast = this.getFiveDaysForecast;
+		this.loadData();
+
 	}
 };
 </script>
