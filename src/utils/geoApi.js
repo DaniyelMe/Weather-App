@@ -20,7 +20,7 @@ const searchAutoComplete = async function(inputVal) {
 	const url = 'https://dataservice.accuweather.com/locations/v1/cities/autocomplete';
 	const params = `?apikey=${apiKey}&q=${inputVal}&language=en-us HTTP/1.1`;
 
-	return await fetch(`${url}${params}`, { mode: 'cors' })
+	return await fetch(`${url}${params}`)
 		.then(res => res.json())
 		.then(out => {
 			return out;

@@ -19,8 +19,8 @@
 		</div>
 
 		<div v-if="!getIsFindCity" class="add-city animated fadeIn">
-			<div class="add-new-location-text">Add New Location</div>
 			<button class="add-location nonselected button-hover-active" @click="isFindCity">
+			<div class="add-new-location-text">Add Location</div>
 				<span class="material-icons">add</span>
 			</button>
 		</div>

@@ -3,6 +3,7 @@
 		<h4 class="title">Forecast for the next 5 days</h4>
 
 		<div class="day-cards-container">
+			<Loader v-if="getFiveDaysForecast.length < 1"></Loader>
 			<DayCard v-for="day in fiveDaysForecast" :key="day.dayName" :dayData="day"></DayCard>
 		</div>
 	</section>
@@ -10,11 +11,12 @@
 
 <script>
 import DayCard from './DayCard';
+import Loader from './Loader';
 
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
-	components: { DayCard },
+	components: { DayCard, Loader },
 	data() {
 		return {
 			fiveDaysForecast: []

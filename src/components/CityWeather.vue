@@ -1,7 +1,5 @@
 <template>
 	<section class="city-weather">
-		<h1 v-if="getFiveDaysForecast.length == 0">Loading</h1>
-
 		<h4 class="title">Current Weather at</h4>
 
 		<div class="main-top">
