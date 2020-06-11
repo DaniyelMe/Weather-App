@@ -9,11 +9,11 @@ const state = {
 	fiveDaysForecast: [],
 
 	favorites: [],
-
-	status: [],
+	favoritesSet: new Set(),
 
 	searchResult: '',
 
+	isFindCity: false,
 	theme: 'light-mode',
 	degree: true
 };
@@ -23,7 +23,8 @@ const getters = {
 	getFiveDaysForecast: state => state.fiveDaysForecast,
 	getCurrentPosition: state => state.currentPosition,
 	getSearchResult: state => state.searchResult,
-	getDegree: state => state.degree
+	getDegree: state => state.degree,
+	getIsFindCity: state => state.isFindCity
 };
 
 const actions = {
@@ -35,7 +36,7 @@ const actions = {
 		} else {
 			navigator.geolocation.getCurrentPosition(
 				position => {
-					commit('setCurrentPosition', {
+					commit('setPosition', {
 						lat: position.coords.latitude,
 						long: position.coords.longitude
 					});
@@ -50,8 +51,6 @@ const actions = {
 	},
 
 	fetchCurrentWeather({ dispatch }) {
-		// To spare Accuweather API calls. Pre LocalStorage solution
-
 		geoApi.geoPosition(state.position.latitude, state.position.longitude).then(payload => {
 			state.currentPosition = {
 				name: payload.AdministrativeArea.EnglishName,
@@ -123,20 +122,29 @@ const actions = {
 		}
 	},
 
-	fetchSearchResult({ commit }, inputVal) {
-		return LocalResult;
-		geoApi.searchAutoComplete(inputVal).then(result => {
-			return result;
-		});
-	},
+	fetchSearchResult({ commit, state }, inputVal) {
+		return geoApi.searchAutoComplete(inputVal).then(result => {
+			return result.map(local => {
+				if (state.favoritesSet.has(parseInt(local.Key))) local.fav = true;
 
-	addFavorite({ commit }, key) {}
+				return local;
+			});
+		});
+	}
 };
 
 const mutations = {
-	setCurrentPosition(state, { lat, long }) {
+	setPosition(state, { lat, long }) {
 		state.position.latitude = lat;
 		state.position.longitude = long;
+	},
+
+	setCurrentPosition(state, location) {
+		state.currentPosition = {
+			name: location.LocalizedName,
+			key: location.Key,
+			country: { name: location.Country.LocalizedName, id: location.Country.ID }
+		};
 	},
 
 	setFiveDaysForecast(state, fiveDays) {
@@ -151,6 +159,7 @@ const mutations = {
 
 		if (action) {
 			state.favorites.push(location);
+			state.favoritesSet.add(location.key);
 		} else {
 			const removeIndex = state.favorites
 				.map(fav => {
@@ -158,8 +167,8 @@ const mutations = {
 				})
 				.indexOf(location.key);
 			state.favorites.splice(removeIndex, 1);
+			state.favoritesSet.delete(location.key);
 		}
-		console.log("addFavorite -> state.favorites", state.favorites)
 	}
 };
 

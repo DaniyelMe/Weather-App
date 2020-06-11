@@ -11,17 +11,16 @@
 				</li>
 
 				<li>
-					<router-link
-						:to="{ name: 'favorites' }"
-						:class="{ 'active-path': path == 'favorites' }"
-					>Favorites</router-link>
+					<router-link :to="{ name: 'favorites' }" :class="{ 'active-path': path == 'favorites' }"
+						>Favorites</router-link
+					>
 				</li>
 			</ol>
 		</div>
 
-		<div class="add-city animated fadeIn">
+		<div v-if="!getIsFindCity" class="add-city animated fadeIn">
 			<div class="add-new-location-text">Add New Location</div>
-			<button class="add-location nonselected button-hover-active" @click="isFindCity = true">
+			<button class="add-location nonselected button-hover-active" @click="isFindCity">
 				<span class="material-icons">add</span>
 			</button>
 		</div>
@@ -29,10 +28,19 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
 	computed: {
+		...mapGetters(['getSearchResult', 'getIsFindCity']),
+
 		path() {
 			return this.$route.name;
+		}
+	},
+	methods: {
+		isFindCity() {
+			this.$store.state.app.isFindCity = true;
 		}
 	}
 };

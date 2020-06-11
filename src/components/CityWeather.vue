@@ -15,13 +15,12 @@
 					<button class="button-hover-active" :class="{ 'is-active': activeLove }" @click="addToFav">
 						<span class="heart"></span>
 					</button>
-					<div>Add to favorite</div>
+					<div>Favorite</div>
 				</div>
 
 				<div class="location-temperature">
-					<h3>{{ phrase }}</h3>
-					<h1>
-						<span>{{ tempMin }} - {{ tempMax }}</span>
+					<h1 class="day-card-degree">
+						<span>{{ tempMin }}-{{ tempMax }}</span>
 						<span v-if="getDegree" class="day-card-degree-type">°C</span>
 						<span v-else class="day-card-degree-type">°F</span>
 					</h1>
@@ -30,6 +29,7 @@
 
 			<div class="main-top-right" @click="sun = !sun">
 				<WeatherIcons :sun="sun"></WeatherIcons>
+				<h3>{{ phrase }}</h3>
 			</div>
 		</div>
 	</section>
@@ -45,6 +45,8 @@ export default {
 	components: { WeatherIcons },
 	data() {
 		return {
+			fiveDaysForecast: [],
+
 			date: '',
 			tempMin: '',
 			tempMax: '',
@@ -74,43 +76,40 @@ export default {
 			this.location.name = this.getCurrentPosition.name;
 			this.location.country = this.getCurrentPosition.country.name;
 
-			this.$store.state.app.favorites.map(fav => {
-				if (fav.key == position.key) this.activeLove = true;
-			});
+			this.activeLove = this.$store.state.app.favoritesSet.has(position.key);
 
-			if (this.getFiveDaysForecast > 0) {
-				this.date = this.getFiveDaysForecast[0].date;
-				this.tempMin = this.getFiveDaysForecast[0].temperature.max;
-				this.tempMax = this.getFiveDaysForecast[0].temperature.min;
-				this.phrase = this.getFiveDaysForecast[0].day.IconPhrase;
+			if (this.fiveDaysForecast.length > 0) {
+				this.date = this.fiveDaysForecast[0].date;
+				this.tempMin = this.fiveDaysForecast[0].temperature.max;
+				this.tempMax = this.fiveDaysForecast[0].temperature.min;
+				this.phrase = this.fiveDaysForecast[0].day.IconPhrase;
 			}
 		}
 	},
 	computed: {
 		...mapGetters(['getFiveDaysForecast', 'getCurrentPosition', 'getFavorites', 'getDegree']),
 		getDegree() {
-			if (this.getFiveDaysForecast < 1) return;
+			if (this.fiveDaysForecast.length < 1) return;
 
 			if (!this.$store.state.app.degree) {
-				console.log('loadData -> this.getFiveDaysForecast[0]', this.getFiveDaysForecast[0]);
-
-				this.tempMin = tempeConvert.celsiusToFahrenheit(this.getFiveDaysForecast[0].temperature.min);
-				this.tempMax = tempeConvert.celsiusToFahrenheit(this.getFiveDaysForecast[0].temperature.max);
+				this.tempMin = tempeConvert.celsiusToFahrenheit(this.fiveDaysForecast[0].temperature.min);
+				this.tempMax = tempeConvert.celsiusToFahrenheit(this.fiveDaysForecast[0].temperature.max);
 				return false;
 			}
 
-			this.tempMin = this.getFiveDaysForecast[0].temperature.min;
-			this.tempMax = this.getFiveDaysForecast[0].temperature.max;
+			this.tempMin = this.fiveDaysForecast[0].temperature.min;
+			this.tempMax = this.fiveDaysForecast[0].temperature.max;
 			return true;
 		}
 	},
 	watch: {
 		getFiveDaysForecast() {
+			this.fiveDaysForecast = this.getFiveDaysForecast;
 			this.loadData();
 		}
 	},
 	created() {
-		this.loadData();
+		this.fiveDaysForecast = this.getFiveDaysForecast;
 	}
 };
 </script>
