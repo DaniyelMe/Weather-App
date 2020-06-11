@@ -27,7 +27,7 @@
 				</div>
 			</div>
 
-			<div class="main-top-right" @click="sun = !sun">
+			<div class="main-top-right">
 				<WeatherIcons :sun="sun"></WeatherIcons>
 				<h3>{{ phrase }}</h3>
 			</div>
@@ -110,7 +110,6 @@ export default {
 	created() {
 		this.fiveDaysForecast = this.getFiveDaysForecast;
 		this.loadData();
-
 	}
 };
 </script>

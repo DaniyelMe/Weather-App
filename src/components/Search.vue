@@ -1,7 +1,7 @@
 <template>
 	<div class="search-container" v-if="getIsFindCity || wating">
 		<div class="add-city search animated fadeIn">
-			<form v-if="!wating" @submit.prevent="getResult" class="search-form">
+			<form @submit.prevent="getResult" @keyup.passive="getResult" class="search-form">
 				<input
 					type="text"
 					name="search"
@@ -90,5 +90,3 @@ export default {
 	}
 };
 </script>
-
-<style></style>
