@@ -10,7 +10,11 @@
 				</div>
 
 				<div class="add-favorite">
-					<button class="button-hover-active" :class="{ 'is-active': activeLove }" @click="addToFav">
+					<button
+						class="button-hover-active"
+						:class="{ 'is-active': favorite || love == true}"
+						@click="addToFav"
+					>
 						<span class="heart"></span>
 					</button>
 					<div>Favorite</div>
@@ -18,8 +22,9 @@
 
 				<div class="location-temperature">
 					<h1 class="day-card-degree">
-						<span>{{ tempMin }}-{{ tempMax }}</span>
-						<span v-if="getDegree" class="day-card-degree-type">°C</span>
+						<span>{{ forecast.tempMin }}-{{ forecast.tempMax }}</span>
+
+						<span v-if="getMetric" class="day-card-degree-type">°C</span>
 						<span v-else class="day-card-degree-type">°F</span>
 					</h1>
 				</div>
@@ -27,7 +32,7 @@
 
 			<div class="main-top-right">
 				<WeatherIcons :sun="sun"></WeatherIcons>
-				<h3>{{ phrase }}</h3>
+				<h3>{{ forecast.phrase }}</h3>
 			</div>
 		</div>
 	</section>
@@ -37,78 +42,69 @@
 import WeatherIcons from './WeatherIcons';
 import tempeConvert from '../utils/tempeConvert.js';
 
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
 	components: { WeatherIcons },
 	data() {
 		return {
-			fiveDaysForecast: [],
-
-			date: '',
-			tempMin: '',
-			tempMax: '',
-			phrase: '',
-			location: { name: '', country: '' },
-
-			activeLove: false,
-			sun: true
+			sun: true,
+			love: false
 		};
 	},
 	methods: {
 		addToFav() {
-			this.activeLove = !this.activeLove;
-			const location = {
-				name: this.location.name,
-				country: this.location.country,
-				key: this.getCurrentPosition.key,
-				action: this.activeLove
-			};
+			let status = false;
+			if (this.favorite) status = true;
 
-			this.$store.commit('addFavorite', location);
-		},
+			this.$store.commit('updateFavorite', { position: this.$store.state.app.currentPosition, action: !status });
 
-		loadData() {
-			const position = this.$store.state.app.currentPosition;
-
-			this.location.name = this.getCurrentPosition.name;
-			this.location.country = this.getCurrentPosition.country.name;
-
-			console.log('loadData -> this.$store.state.app.', this.$store.state.app);
-			this.activeLove = this.$store.state.app.favoritesSet[position.key];
-
-			if (this.fiveDaysForecast.length > 0) {
-				this.date = this.fiveDaysForecast[0].date;
-				this.tempMin = this.fiveDaysForecast[0].temperature.max;
-				this.tempMax = this.fiveDaysForecast[0].temperature.min;
-				this.phrase = this.fiveDaysForecast[0].day.IconPhrase;
-			}
+			this.$store.commit('updateFavoriteSet', { key: this.$store.state.app.currentPosition.key, action: !status });
 		}
 	},
 	computed: {
-		...mapGetters(['getFiveDaysForecast', 'getCurrentPosition', 'getFavorites', 'getDegree']),
-		getDegree() {
-			if (this.fiveDaysForecast.length < 1) return;
+		...mapGetters(['getMetric']),
 
-			if (!this.$store.state.app.degree) {
-				this.tempMin = tempeConvert.celsiusToFahrenheit(this.fiveDaysForecast[0].temperature.min);
-				this.tempMax = tempeConvert.celsiusToFahrenheit(this.fiveDaysForecast[0].temperature.max);
-				return false;
+		forecast() {
+			const forecast = this.$store.state.app.fiveDaysForecast;
+
+			if (forecast.length > 0) {
+				let min = forecast[0].temperature.min;
+				let max = forecast[0].temperature.max;
+
+				if (!this.$store.state.app.metric) {
+					min = tempeConvert.celsiusToFahrenheit(forecast[0].temperature.min);
+					max = tempeConvert.celsiusToFahrenheit(forecast[0].temperature.max);
+				}
+
+				return {
+					tempMin: max,
+					tempMax: min,
+					phrase: forecast[0].day.IconPhrase
+				};
 			}
 
-			this.tempMin = this.fiveDaysForecast[0].temperature.min;
-			this.tempMax = this.fiveDaysForecast[0].temperature.max;
-			return true;
+			return {
+				tempMin: '',
+				tempMax: '',
+				phrase: ''
+			};
+		},
+
+		location() {
+			const position = this.$store.state.app.currentPosition;
+
+			return {
+				name: position.name,
+				country: position.country.name,
+				key: position.key
+			};
+		},
+
+		favorite() {
+			const set = this.$store.state.app.favoritesSet;
+			return set[this.location.key];
 		}
-	},
-	watch: {
-		getFiveDaysForecast() {
-			this.fiveDaysForecast = this.getFiveDaysForecast;
-		}
-	},
-	created() {
-		this.fiveDaysForecast = this.getFiveDaysForecast;
-		this.loadData();
 	}
 };
 </script>

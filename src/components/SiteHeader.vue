@@ -18,9 +18,9 @@
 			</ol>
 		</div>
 
-		<div v-if="!getIsFindCity" class="add-city animated fadeIn">
+		<div v-if="!isFind" class="add-city animated fadeIn">
 			<button class="add-location nonselected button-hover-active" @click="isFindCity">
-			<div class="add-new-location-text">Add Location</div>
+				<div class="add-new-location-text">Add Location</div>
 				<span class="material-icons">add</span>
 			</button>
 		</div>
@@ -32,7 +32,9 @@ import { mapGetters } from 'vuex';
 
 export default {
 	computed: {
-		...mapGetters(['getSearchResult', 'getIsFindCity']),
+		isFind() {
+			return this.$store.state.app.isFindCity;
+		},
 
 		path() {
 			return this.$route.name;
@@ -40,7 +42,7 @@ export default {
 	},
 	methods: {
 		isFindCity() {
-			this.$store.state.app.isFindCity = true;
+			this.$store.commit('toggleFind', true);
 		}
 	}
 };

@@ -3,13 +3,13 @@
 		<SiteHeader></SiteHeader>
 		<main>
 			<div
-				v-for="favorite in getFavorites"
+				v-for="favorite in favorites"
 				:key="favorite.key"
 				class="location-info day-card nonselected"
 				@click="selected(favorite)"
 			>
 				<h1>{{ favorite.name }}</h1>
-				<h3>{{ favorite.country }}</h3>
+				<h3>{{ favorite.country.name }}</h3>
 			</div>
 		</main>
 
@@ -21,17 +21,19 @@
 import SiteHeader from './SiteHeader';
 import SiteFooter from './SiteFooter';
 
-import { mapGetters } from 'vuex';
 export default {
 	components: {
 		SiteHeader,
 		SiteFooter
 	},
 	computed: {
-		...mapGetters(['getFavorites'])
+		favorites() {
+			return this.$store.state.app.favorites;
+		}
 	},
 	methods: {
 		selected(favorite) {
+			this.$store.commit('setCurrentPosition', favorite);
 			this.$store.dispatch('fetchFiveDaysForecast', favorite.key).then(() => {
 				this.$router.push({ name: 'home' });
 			});

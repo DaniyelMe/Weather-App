@@ -6,7 +6,8 @@
 export default {
 	name: 'App',
 	created() {
-		document.body.setAttribute('class', this.$store.state.app.theme);
+		const theme = this.$store.state.app.theme ? 'light-mode' : 'dark-mode';
+		document.body.setAttribute('class', theme);
 	}
 };
 </script>

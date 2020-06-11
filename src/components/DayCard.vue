@@ -1,21 +1,22 @@
 <template>
-	<a :href="link" class="day-card nonselected">
+	<a :href="forecast.link" class="day-card nonselected">
 		<span class="day-info">
-			<h2 class="day-card-name">{{ dayName }}</h2>
-			<p class="day-card-date">{{ date }}</p>
+			<h2 class="day-card-name">{{ forecast.dayName }}</h2>
+			<p class="day-card-date">{{ forecast.date }}</p>
 			<h1 class="day-card-degree">
-				<span>{{ tempMin }}-{{ tempMax }}</span>
-				<span v-if="getDegree" class="day-card-degree-type">°C</span>
+				<span>{{ forecast.tempMin }}-{{ forecast.tempMax }}</span>
+
+				<span v-if="getMetric" class="day-card-degree-type">°C</span>
 				<span v-else class="day-card-degree-type">°F</span>
 			</h1>
 		</span>
 
 		<div class="day-description weather-icon">
 			<figure>
-				<img :src="icon" :alt="phrase + `image`" />
+				<img :src="forecast.icon" :alt="forecast.phrase + `image`" />
 			</figure>
 
-			<span>{{ phrase }}</span>
+			<span>{{ forecast.phrase }}</span>
 		</div>
 	</a>
 </template>
@@ -27,38 +28,29 @@ import { mapGetters } from 'vuex';
 
 export default {
 	props: ['dayData'],
-	data() {
-		return {
-			dayName: '',
-			date: '',
-			tempMin: '',
-			tempMax: '',
-			phrase: '',
-			icon: '',
-			link: '#'
-		};
-	},
 	computed: {
-		...mapGetters(['getDegree']),
-		getDegree() {
-			if (!this.$store.state.app.degree) {
-				this.tempMin = tempeConvert.celsiusToFahrenheit(this.dayData.temperature.min);
-				this.tempMax = tempeConvert.celsiusToFahrenheit(this.dayData.temperature.max);
-				return false;
-			}
-			this.tempMin = this.dayData.temperature.min;
-			this.tempMax = this.dayData.temperature.max;
-			return true;
-		}
-	},
+		...mapGetters(['getMetric']),
 
-	created() {
-		if (this.dayData) {
-			this.dayName = this.dayData.dayName;
-			this.date = this.dayData.date;
-			this.phrase = this.dayData.day.IconPhrase;
-			this.icon = icons.getIcons(this.dayData.day.Icon);
-			this.link = this.dayData.link;
+		forecast() {
+			const forecast = this.dayData;
+
+			let min = forecast.temperature.min;
+			let max = forecast.temperature.max;
+
+			if (!this.getMetric) {
+				min = tempeConvert.celsiusToFahrenheit(forecast.temperature.max);
+				max = tempeConvert.celsiusToFahrenheit(forecast.temperature.min);
+			}
+
+			return {
+				tempMin: min,
+				tempMax: max,
+				dayName: forecast.dayName,
+				date: forecast.date,
+				phrase: forecast.IconPhrase,
+				icon: icons.getIcons(forecast.day.Icon),
+				link: forecast.link
+			};
 		}
 	}
 };

@@ -13,27 +13,22 @@ const state = {
 
 	searchResult: '',
 
+	notifications: [],
 
 	isFindCity: false,
-	theme: 'light-mode',
-	degree: true
+	theme: true,
+	metric: true
 };
 
 const getters = {
-	getFavorites: state => state.favorites,
-	getFiveDaysForecast: state => state.fiveDaysForecast,
-	getCurrentPosition: state => state.currentPosition,
-	getSearchResult: state => state.searchResult,
-	getDegree: state => state.degree,
-	getIsFindCity: state => state.isFindCity
+	getMetric: state => state.metric
 };
 
 const actions = {
 	// Geolocation API - Web APIs
 	fetchCurrentPosition({ commit, dispatch }) {
 		if (!navigator.geolocation) {
-			// TODO: Show Toast message to the user
-			console.log('Geolocation is not supported by your browser');
+			commit('addStatus', 'Geolocation is not supported by your browser');
 		} else {
 			navigator.geolocation.getCurrentPosition(
 				position => {
@@ -42,10 +37,12 @@ const actions = {
 						long: position.coords.longitude
 					});
 
+					commit('addStatus', 'We found your location, processing...');
+
 					dispatch('fetchCurrentWeather');
 				},
 				error => {
-					console.log('Unable to retrieve your location');
+					commit('addStatus', 'Unable to retrieve your location');
 				}
 			);
 		}
@@ -63,73 +60,68 @@ const actions = {
 		});
 	},
 
-	fetchFiveDaysForecast({ commit, state }, key) {
-		const dataDate = state.fiveDaysForecast[0] ? state.fiveDaysForecast[0].date : false;
-		//get the date in format yyyy-mm-dd
-		const nowDate = new Date().toISOString().slice(0, 10);
+	fetchFiveDaysForecast({ commit }, key) {
+		geoApi.fiveDaysForecast(key).then(forecast => {
+			forecast = forecast.DailyForecasts;
 
-		if (dataDate != nowDate) {
-			geoApi.fiveDaysForecast(key).then(forecast => {
-				forecast = forecast.DailyForecasts;
+			const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
-				const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+			const todayIndex = new Date().getDay();
+			let fiveDays = [];
+			let j = 0;
 
-				const todayIndex = new Date().getDay();
-				let fiveDays = [];
-				let j = 0;
+			// From today till end of the week.
+			for (let i = todayIndex; i < 7 && fiveDays.length < 5; i++) {
+				const { Temperature, Date, Day, Night, Link } = forecast[j++];
 
-				// From today till end of the week.
-				for (let i = todayIndex; i < 7 && fiveDays.length < 5; i++) {
-					const { Temperature, Date, Day, Night, Link } = forecast[j++];
-
-					// make sure it's celsius
-					if (Temperature.Maximum.Unit == 'F') {
-						Temperature.Maximum.Value = tempeConvert.fahrenheitToCelsius(Temperature.Maximum.Value);
-						Temperature.Minimum.Value = tempeConvert.fahrenheitToCelsius(Temperature.Minimum.Value);
-					}
-
-					fiveDays.push({
-						dayName: daysOfWeek[i],
-						temperature: { max: Temperature.Maximum.Value, min: Temperature.Minimum.Value, type: Temperature.Unit },
-						date: parseDate(Date),
-						day: Day,
-						night: Night,
-						link: Link
-					});
+				// make sure it's celsius
+				if (Temperature.Maximum.Unit == 'F') {
+					Temperature.Maximum.Value = tempeConvert.fahrenheitToCelsius(Temperature.Maximum.Value);
+					Temperature.Minimum.Value = tempeConvert.fahrenheitToCelsius(Temperature.Minimum.Value);
 				}
 
-				// From the start of the week till we have 5 days.
-				for (let i = 0; fiveDays.length < 5; i++) {
-					const { Temperature, Date, Day, Night, Link } = forecast[j++];
+				fiveDays.push({
+					dayName: daysOfWeek[i],
+					temperature: { max: Temperature.Maximum.Value, min: Temperature.Minimum.Value, type: Temperature.Unit },
+					date: parseDate(Date),
+					day: Day,
+					night: Night,
+					link: Link
+				});
+			}
 
-					// make sure it's celsius
-					if (Temperature.Maximum.Unit == 'F') {
-						Temperature.Maximum.Value = tempeConvert.fahrenheitToCelsius(Temperature.Maximum.Value);
-						Temperature.Minimum.Value = tempeConvert.fahrenheitToCelsius(Temperature.Minimum.Value);
-					}
+			// From the start of the week till we have 5 days.
+			for (let i = 0; fiveDays.length < 5; i++) {
+				const { Temperature, Date, Day, Night, Link } = forecast[j++];
 
-					fiveDays.push({
-						dayName: daysOfWeek[i],
-						temperature: { max: Temperature.Maximum.Value, min: Temperature.Minimum.Value, type: Temperature.Unit },
-						date: parseDate(Date),
-						day: Day,
-						night: Night,
-						link: Link
-					});
+				// make sure it's celsius
+				if (Temperature.Maximum.Unit == 'F') {
+					Temperature.Maximum.Value = tempeConvert.fahrenheitToCelsius(Temperature.Maximum.Value);
+					Temperature.Minimum.Value = tempeConvert.fahrenheitToCelsius(Temperature.Minimum.Value);
 				}
 
-				commit('setFiveDaysForecast', fiveDays);
-			});
-		}
+				fiveDays.push({
+					dayName: daysOfWeek[i],
+					temperature: { max: Temperature.Maximum.Value, min: Temperature.Minimum.Value, type: Temperature.Unit },
+					date: parseDate(Date),
+					day: Day,
+					night: Night,
+					link: Link
+				});
+			}
+
+			commit('setFiveDaysForecast', fiveDays);
+		});
 	},
 
 	fetchSearchResult({ commit, state }, inputVal) {
 		return geoApi.searchAutoComplete(inputVal).then(result => {
-			return result.map(local => {
-				if (state.favoritesSet[parseInt(local.Key)]) local.fav = true;
-
+			const filterd = result.map(local => {
+				if (state.favoritesSet[local.ey]) local.fav = true;
 				return local;
 			});
+
+			commit('setSearchResult', filterd);
 		});
 	}
 };
@@ -142,9 +134,9 @@ const mutations = {
 
 	setCurrentPosition(state, location) {
 		state.currentPosition = {
-			name: location.LocalizedName,
-			key: location.Key,
-			country: { name: location.Country.LocalizedName, id: location.Country.ID }
+			name: location.name,
+			key: location.key,
+			country: { name: location.country.name, id: location.country.id }
 		};
 	},
 
@@ -152,25 +144,52 @@ const mutations = {
 		state.fiveDaysForecast = fiveDays;
 	},
 
-	addFavorite(state, location) {
-		//will add to the set if action == true, and remove otherwise
-		const action = location.action;
-		//remove the action property from the object
-		delete location['action'];
-		if (state.favoritesSet[location.key]) return;
-
+	updateFavoriteSet(state, { key, action }) {
 		if (action) {
-			state.favorites.push(location);
-			state.favoritesSet[location.key] = true;
+			state.favoritesSet[key] = true;
+		} else {
+			delete state.favoritesSet[key];
+		}
+	},
+
+	updateFavorite(state, { position, action }) {
+		if (action) {
+			//don't add if already added
+			if (state.favoritesSet[position.key]) return;
+
+			state.favorites.push(position);
 		} else {
 			const removeIndex = state.favorites
 				.map(fav => {
 					return fav.key;
 				})
-				.indexOf(location.key);
+				.indexOf(position.key);
 			state.favorites.splice(removeIndex, 1);
-			delete state.favoritesSet[location.key];
 		}
+	},
+
+	toggleMetric(state) {
+		state.metric = !state.metric;
+	},
+
+	toggleTheme(state) {
+		state.theme = !state.theme;
+	},
+
+	toggleFind(state, status) {
+		state.isFindCity = status;
+	},
+
+	resetResult(state) {
+		state.searchResult = [];
+	},
+
+	setSearchResult(state, results) {
+		state.searchResult = results;
+	},
+
+	addStatus(state, notification) {
+		state.notifications.push(notification);
 	}
 };
 

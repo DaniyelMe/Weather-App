@@ -1,5 +1,5 @@
 <template>
-	<div class="search-container" v-if="getIsFindCity || wating">
+	<div class="search-container" v-if="isFind || wating">
 		<div class="add-city search animated fadeIn">
 			<form @submit.prevent="getResult" @keyup.passive="getResult" class="search-form">
 				<input
@@ -8,23 +8,28 @@
 					v-model="search"
 					class="search-form-input"
 					placeholder="Start typing here..."
-					@change="debouncedGetResult(getResult, 0.1)"
 				/>
 			</form>
 
-			<button class="close-popup button-hover-active animated fadeIn" v-if="getIsFindCity" @click="isFindCity">
+			<button
+				class="close-popup button-hover-active animated fadeIn"
+				v-if="isFind"
+				@click="isFindCity"
+			>
 				<span class="material-icons">close</span>
 			</button>
 		</div>
 
-		<div v-if="getIsFindCity && results.length > 0" class="search-results">
-			<!-- Results Should Go Here -->
-			<button v-for="result in results" :key="result.Key" @click="handleResult(result)" class="nonselected">
+		<div v-if="isFind && searchResult.length > 0" class="search-results">
+			<button
+				v-for="result in searchResult"
+				:key="result.Key"
+				@click="handleResult(result)"
+				class="nonselected"
+			>
 				<h2>{{ result.LocalizedName }}</h2>
 				<h4>{{ result.Country.LocalizedName }}</h4>
-				<span v-if="result.fav" class="material-icons">
-					favorite
-				</span>
+				<span v-if="result.fav" class="material-icons">favorite</span>
 			</button>
 		</div>
 
@@ -34,59 +39,56 @@
 
 <script>
 import Loader from './Loader';
-import { mapGetters } from 'vuex';
 
 export default {
 	components: { Loader },
 	data() {
 		return {
-			search: '',
-			results: [],
-			wating: false
+			wating: false,
+			search: ''
 		};
 	},
 	methods: {
-		getResult() {
+		isFindCity() {
+			this.$store.commit('toggleFind', false);
+		},
+
+		async getResult() {
 			if (this.search.length < 2) return;
 
 			this.wating = true;
-
-			(async () => {
-				this.results = [];
-				const payload = await this.$store.dispatch('fetchSearchResult', this.search);
-				if (payload && payload.length > 0) this.results = payload;
-				this.wating = '';
-			})();
-		},
-
-		debouncedGetResult(func, wait) {
-			let timeout;
-			return function(...args) {
-				clearTimeout(timeout);
-				timeout = setTimeout(() => {
-					func.apply(this, args);
-				}, wait);
-			};
+			this.$store.commit('resetResult');
+			await this.$store.dispatch('fetchSearchResult', this.search);
+			this.wating = false;
 		},
 
 		async handleResult(selected) {
 			this.wating = true;
-			this.results = [];
-			this.$store.state.app.isFindCity = false;
 
-			this.$store.commit('setCurrentPosition', selected);
+			this.$store.commit('resetResult');
+
+			// Senetaize uppercase
+			const location = {
+				name: selected.LocalizedName,
+				key: selected.Key,
+				country: { name: selected.Country.LocalizedName, id: selected.Country.ID }
+			};
+
+			this.$store.commit('setCurrentPosition', location);
 			await this.$store.dispatch('fetchFiveDaysForecast', selected.Key);
 
-			this.$store.state.app.isFindCity = false;
-			this.wating = '';
-		},
+			this.$store.commit('toggleFind', false);
 
-		isFindCity() {
-			this.$store.state.app.isFindCity = false;
+			this.wating = false;
 		}
 	},
 	computed: {
-		...mapGetters(['getSearchResult', 'getIsFindCity'])
+		searchResult() {
+			return this.$store.state.app.searchResult;
+		},
+		isFind() {
+			return this.$store.state.app.isFindCity;
+		}
 	}
 };
 </script>
