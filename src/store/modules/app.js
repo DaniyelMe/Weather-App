@@ -117,7 +117,7 @@ const actions = {
 	fetchSearchResult({ commit, state }, inputVal) {
 		return geoApi.searchAutoComplete(inputVal).then(result => {
 			const filterd = result.map(local => {
-				if (state.favoritesSet[local.ey]) local.fav = true;
+				if (state.favoritesSet[local.Key]) local.fav = true;
 				return local;
 			});
 
