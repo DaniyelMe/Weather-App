@@ -1,5 +1,6 @@
 import geoApi from '../../utils/geoApi.js';
 import tempeConvert from '../../utils/tempeConvert.js';
+import dates from '../../utils/dates.js';
 
 const state = {
 	position: { latitude: '32.0853', longitude: '34.7818' },
@@ -64,53 +65,21 @@ const actions = {
 		geoApi.fiveDaysForecast(key).then(forecast => {
 			forecast = forecast.DailyForecasts;
 
-			const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+			//Reset the forecast array
+			commit('resetForecast');
 
 			const todayIndex = new Date().getDay();
-			let fiveDays = [];
 			let j = 0;
 
 			// From today till end of the week.
-			for (let i = todayIndex; i < 7 && fiveDays.length < 5; i++) {
-				const { Temperature, Date, Day, Night, Link } = forecast[j++];
-
-				// make sure it's celsius
-				if (Temperature.Maximum.Unit == 'F') {
-					Temperature.Maximum.Value = tempeConvert.fahrenheitToCelsius(Temperature.Maximum.Value);
-					Temperature.Minimum.Value = tempeConvert.fahrenheitToCelsius(Temperature.Minimum.Value);
-				}
-
-				fiveDays.push({
-					dayName: daysOfWeek[i],
-					temperature: { max: Temperature.Maximum.Value, min: Temperature.Minimum.Value, type: Temperature.Unit },
-					date: parseDate(Date),
-					day: Day,
-					night: Night,
-					link: Link
-				});
+			for (let i = todayIndex; i < 7 && j < 5; i++) {
+				commit('addDayOfForcast', { forecast: forecast[j++], i: i });
 			}
 
 			// From the start of the week till we have 5 days.
-			for (let i = 0; fiveDays.length < 5; i++) {
-				const { Temperature, Date, Day, Night, Link } = forecast[j++];
-
-				// make sure it's celsius
-				if (Temperature.Maximum.Unit == 'F') {
-					Temperature.Maximum.Value = tempeConvert.fahrenheitToCelsius(Temperature.Maximum.Value);
-					Temperature.Minimum.Value = tempeConvert.fahrenheitToCelsius(Temperature.Minimum.Value);
-				}
-
-				fiveDays.push({
-					dayName: daysOfWeek[i],
-					temperature: { max: Temperature.Maximum.Value, min: Temperature.Minimum.Value, type: Temperature.Unit },
-					date: parseDate(Date),
-					day: Day,
-					night: Night,
-					link: Link
-				});
+			for (let i = 0; j < 5; i++) {
+				commit('addDayOfForcast', { forecast: forecast[j++], i: i });
 			}
-
-			commit('setFiveDaysForecast', fiveDays);
 		});
 	},
 
@@ -140,15 +109,36 @@ const mutations = {
 		};
 	},
 
-	setFiveDaysForecast(state, fiveDays) {
-		state.fiveDaysForecast = fiveDays;
+	resetForecast(state) {
+		state.fiveDaysForecast = [];
+	},
+
+	addDayOfForcast(state, { forecast, i }) {
+		const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+		const { Temperature, Date, Day, Night, Link, Sun } = forecast;
+
+		// make sure it's celsius
+		if (Temperature.Maximum.Unit == 'F') {
+			Temperature.Maximum.Value = tempeConvert.fahrenheitToCelsius(Temperature.Maximum.Value);
+			Temperature.Minimum.Value = tempeConvert.fahrenheitToCelsius(Temperature.Minimum.Value);
+		}
+
+		state.fiveDaysForecast.push({
+			dayName: daysOfWeek[i],
+			temperature: { max: Temperature.Maximum.Value, min: Temperature.Minimum.Value, type: Temperature.Unit },
+			date: dates.parseDate(Date),
+			day: Day,
+			night: Night,
+			link: Link,
+			sun: Sun
+		});
 	},
 
 	updateFavoriteSet(state, { key, action }) {
 		if (action) {
 			state.favoritesSet[key] = true;
 		} else {
-			delete state.favoritesSet[key];
+			state.favoritesSet[key] = false;
 		}
 	},
 
@@ -199,26 +189,3 @@ export default {
 	actions,
 	mutations
 };
-
-function parseDate(dataDate) {
-	const monthNames = [
-		'January',
-		'February',
-		'March',
-		'April',
-		'May',
-		'June',
-		'July',
-		'August',
-		'September',
-		'October',
-		'November',
-		'December'
-	];
-
-	const date = dataDate.split('T')[0];
-	let parseDate = date.split('-').reverse();
-	parseDate[1] = parseDate[1].split('')[0] == 1 ? monthNames[parseDate[1]] : monthNames[parseDate[1].split('')[1]];
-
-	return Array.from(parseDate).join(' ');
-}

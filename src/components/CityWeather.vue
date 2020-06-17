@@ -10,11 +10,7 @@
 				</div>
 
 				<div class="add-favorite">
-					<button
-						class="button-hover-active"
-						:class="{ 'is-active': favorite || love == true}"
-						@click="addToFav"
-					>
+					<button class="button-hover-active" :class="{ 'is-active': favorite}" @click="addToFav">
 						<span class="heart"></span>
 					</button>
 					<div>Favorite</div>
@@ -48,18 +44,18 @@ export default {
 	components: { WeatherIcons },
 	data() {
 		return {
-			sun: true,
-			love: false
+			sun: true
 		};
 	},
 	methods: {
 		addToFav() {
-			let status = false;
-			if (this.favorite) status = true;
+			this.$store.commit('updateFavorite', { position: this.$store.state.app.currentPosition, action: !this.favorite });
 
-			this.$store.commit('updateFavorite', { position: this.$store.state.app.currentPosition, action: !status });
-
-			this.$store.commit('updateFavoriteSet', { key: this.$store.state.app.currentPosition.key, action: !status });
+			const status = !this.favorite;
+			this.$store.commit('updateFavoriteSet', {
+				key: this.$store.state.app.currentPosition.key,
+				action: status
+			});
 		}
 	},
 	computed: {
@@ -102,8 +98,8 @@ export default {
 		},
 
 		favorite() {
-			const set = this.$store.state.app.favoritesSet;
-			return set[this.location.key];
+			if (this.$store.state.app.favoritesSet[this.location.key]) return true;
+			return false;
 		}
 	}
 };
