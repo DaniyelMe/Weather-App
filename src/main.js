@@ -1,14 +1,13 @@
-import Vue from 'vue';
-import App from './App.vue';
+import 'babel-polyfill';
+import React from 'react';
+import { render } from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
 
-import store from './store';
-import router from './router';
+import App from './App.js';
 
-Vue.config.productionTip = false;
-
-new Vue({
-	el: '#app',
-	store,
-	router,
-	render: h => h(App)
-});
+render(
+	<BrowserRouter>
+		<App />
+	</BrowserRouter>,
+	document.getElementById('app')
+);
