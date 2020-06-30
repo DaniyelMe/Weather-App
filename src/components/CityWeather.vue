@@ -10,7 +10,12 @@
 				</div>
 
 				<div class="add-favorite">
-					<button class="button-hover-active" :class="{ 'is-active': favorite }" @click="addToFav">
+					<button
+						class="button-hover-active"
+						:class="{ 'is-active': favorite }"
+						@click="addToFav"
+						aria-label="Add to favorite"
+					>
 						<span class="heart"></span>
 					</button>
 					<div>Favorite</div>
