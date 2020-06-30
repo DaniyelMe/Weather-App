@@ -38,6 +38,9 @@ export default {
 				this.$router.push({ name: 'home' });
 			});
 		}
+	},
+	metaInfo: {
+		title: 'Favorites'
 	}
 };
 </script>

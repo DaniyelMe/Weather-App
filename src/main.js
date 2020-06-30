@@ -1,8 +1,11 @@
 import Vue from 'vue';
 import App from './App.vue';
+import VueMeta from 'vue-meta';
 
 import store from './store';
 import router from './router';
+
+Vue.use(VueMeta);
 
 Vue.config.productionTip = false;
 

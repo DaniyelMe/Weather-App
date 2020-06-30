@@ -28,6 +28,9 @@ export default {
 		// this.$store.dispatch('fetchCurrentPosition');
 		// we retrive the key to 5days and fetch forecast
 		this.$store.dispatch('fetchCurrentWeather');
+	},
+	metaInfo: {
+		title: 'Home'
 	}
 };
 </script>
