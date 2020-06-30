@@ -47,7 +47,7 @@ export default {
 				tempMax: max,
 				dayName: forecast.dayName,
 				date: forecast.date,
-				phrase: forecast.IconPhrase,
+				phrase: forecast.day.IconPhrase,
 				icon: icons.getIcons(forecast.day.Icon),
 				link: forecast.link
 			};
