@@ -7,7 +7,9 @@
 			</label>
 		</div>
 
-		<span>Made with ❤️ 2020</span>
+		<span
+			>Made with ❤️ by <b> Daniyel Menda </b> {{ new Date().getFullYear() }} </span
+		>
 
 		<div class="toggle toggle--degree">
 			<input type="checkbox" :checked="metric" id="toggle--degree" class="toggle--checkbox" @click="toggleMetric" />
