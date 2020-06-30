@@ -1,6 +1,6 @@
 <template>
 	<div class="search-container" v-if="isFind || wating">
-		<div class="add-city search animated fadeIn">
+		<div class="add-city search">
 			<form @submit.prevent="getResult" @keyup.passive="getResult" class="search-form">
 				<input
 					type="text"
@@ -11,22 +11,13 @@
 				/>
 			</form>
 
-			<button
-				class="close-popup button-hover-active animated fadeIn"
-				v-if="isFind"
-				@click="isFindCity"
-			>
+			<button class="close-popup button-hover-active" v-if="isFind" @click="isFindCity">
 				<span class="material-icons">close</span>
 			</button>
 		</div>
 
 		<div v-if="isFind && searchResult.length > 0" class="search-results">
-			<button
-				v-for="result in searchResult"
-				:key="result.Key"
-				@click="handleResult(result)"
-				class="nonselected"
-			>
+			<button v-for="result in searchResult" :key="result.Key" @click="handleResult(result)" class="nonselected">
 				<h2>{{ result.LocalizedName }}</h2>
 				<h4>{{ result.Country.LocalizedName }}</h4>
 				<span v-if="result.fav" class="material-icons">favorite</span>
