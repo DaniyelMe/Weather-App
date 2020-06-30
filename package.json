@@ -1,42 +1,42 @@
 {
-  "name": "daniyel-menda-04-06-20",
-  "version": "1.0.0",
-  "description": "Simple SPA weather webapp",
-  "main": "main.js",
-  "private": true,
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "cleanup": "node src/utils/cleanup.js public .cache",
-    "dev": "npm run cleanup && parcel src/index.html -d public",
-    "build": "npm run cleanup && parcel build src/index.html -d public",
-    "deploy": "npm run build && firebase deploy"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/DaniyelMe/Daniyel-Menda-04-06-20.git"
-  },
-  "author": "Daniyel Menda",
-  "license": "UNLICENSED",
-  "bugs": {
-    "url": "https://github.com/DaniyelMe/Daniyel-Menda-04-06-20/issues"
-  },
-  "homepage": "https://github.com/DaniyelMe/Daniyel-Menda-04-06-20#readme",
-  "dependencies": {
-    "vue": "^2.6.11",
-    "vue-router": "^3.3.2",
-    "vuex": "^3.4.0",
-    "vuex-persistedstate": "^3.0.1"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.10.2",
-    "@babel/plugin-transform-runtime": "^7.10.1",
-    "@babel/runtime": "^7.10.2",
-    "@vue/component-compiler-utils": "^3.1.2",
-    "babel-eslint": "^10.1.0",
-    "eslint": "^7.2.0",
-    "less": "^3.11.3",
-    "parcel-bundler": "^1.12.4",
-    "vue-hot-reload-api": "^2.3.4",
-    "vue-template-compiler": "^2.6.11"
-  }
+	"name": "daniyel-menda-04-06-20",
+	"version": "1.0.0",
+	"description": "Simple SPA weather webapp",
+	"main": "main.js",
+	"private": true,
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"cleanup": "node src/utils/cleanup.js public .cache",
+		"dev": "npm run cleanup && parcel src/index.html -d public",
+		"build": "npm run cleanup && parcel build src/index.html -d public",
+		"deploy": "npm run build && firebase deploy"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/DaniyelMe/Daniyel-Menda-04-06-20.git"
+	},
+	"author": "Daniyel Menda",
+	"license": "UNLICENSED",
+	"bugs": {
+		"url": "https://github.com/DaniyelMe/Daniyel-Menda-04-06-20/issues"
+	},
+	"homepage": "https://github.com/DaniyelMe/Daniyel-Menda-04-06-20#readme",
+	"dependencies": {
+		"vue": "^2.6.11",
+		"vue-router": "^3.3.2",
+		"vuex": "^3.4.0",
+		"vuex-persistedstate": "^3.0.1"
+	},
+	"devDependencies": {
+		"@babel/core": "^7.10.2",
+		"@babel/plugin-transform-runtime": "^7.10.1",
+		"@babel/runtime": "^7.10.2",
+		"@vue/component-compiler-utils": "^3.1.2",
+		"babel-eslint": "^10.1.0",
+		"eslint": "^7.2.0",
+		"less": "^3.11.3",
+		"parcel-bundler": "^1.12.4",
+		"vue-hot-reload-api": "^2.3.4",
+		"vue-template-compiler": "^2.6.11"
+	}
 }

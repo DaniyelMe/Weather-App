@@ -134,19 +134,22 @@ const mutations = {
 		});
 	},
 
-	updateFavoriteSet(state, { key, action }) {
-		if (action) {
-			state.favoritesSet[key] = true;
-		} else {
+	updateFavoriteSet(state, key) {
+		if (state.favoritesSet[key]) {
 			state.favoritesSet[key] = false;
+		} else {
+			state.favoritesSet[key] = true;
 		}
+
+		// Promote reactivity
+		const react = state.favoritesSet;
+		state.favoritesSet = {};
+		state.favoritesSet = react;
 	},
 
-	updateFavorite(state, { position, action }) {
-		if (action) {
+	updateFavorite(state, position) {
+		if (!state.favoritesSet[position.key]) {
 			//don't add if already added
-			if (state.favoritesSet[position.key]) return;
-
 			state.favorites.push(position);
 		} else {
 			const removeIndex = state.favorites

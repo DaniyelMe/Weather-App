@@ -6,11 +6,11 @@
 			<div class="main-top-left">
 				<div class="location-info">
 					<h1>{{ location.name }}</h1>
-					<h3>{{ location.country }}</h3>
+					<h3>{{ location.country.name }}</h3>
 				</div>
 
 				<div class="add-favorite">
-					<button class="button-hover-active" :class="{ 'is-active': favorite}" @click="addToFav">
+					<button class="button-hover-active" :class="{ 'is-active': favorite }" @click="addToFav">
 						<span class="heart"></span>
 					</button>
 					<div>Favorite</div>
@@ -49,13 +49,9 @@ export default {
 	},
 	methods: {
 		addToFav() {
-			this.$store.commit('updateFavorite', { position: this.$store.state.app.currentPosition, action: !this.favorite });
-
-			const status = !this.favorite;
-			this.$store.commit('updateFavoriteSet', {
-				key: this.$store.state.app.currentPosition.key,
-				action: status
-			});
+			this.$store.commit('updateFavorite', this.location);
+			// Toogle it in the set
+			this.$store.commit('updateFavoriteSet', this.location.key);
 		}
 	},
 	computed: {
@@ -88,13 +84,7 @@ export default {
 		},
 
 		location() {
-			const position = this.$store.state.app.currentPosition;
-
-			return {
-				name: position.name,
-				country: position.country.name,
-				key: position.key
-			};
+			return this.$store.state.app.currentPosition;
 		},
 
 		favorite() {
