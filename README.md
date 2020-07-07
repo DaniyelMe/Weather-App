@@ -1,4 +1,7 @@
-# Daniyel-Menda-04-06-20
+# Weather-App 
 
-***Simple SPA weather website.***
+
+***Simple SPA PWA weather website.***
+Built for Herolo as an intro project, using Vue.js, Vuex and Vue-Router, JavaScript and Less modules.
+
 
