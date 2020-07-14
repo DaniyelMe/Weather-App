@@ -3,8 +3,9 @@ import { useSelector, useDispatch } from 'react-redux';
 
 const SiteHeader = ({}) => {
 	const path = () => {
-		return window.location.href;
+		return window.location.pathname;
 	};
+	console.log("path -> path", path())
 
 	const isFindCity = useSelector(state => state.isFindCity);
 
@@ -23,13 +24,13 @@ const SiteHeader = ({}) => {
 
 				<ol>
 					<li>
-						<a href="/" className={path == 'home' ? 'active-path' : undefined}>
+						<a href="/" className={(path() == '/' || path() == '/home') ? 'active-path' : undefined}>
 							Home
 						</a>
 					</li>
 
 					<li>
-						<a href="/favorites" className={path == 'favorites' ? 'active-path' : undefined}>
+						<a href="/favorites" className={path() == '/favorites' ? 'active-path' : undefined}>
 							Favorites
 						</a>
 					</li>
