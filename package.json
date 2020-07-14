@@ -1,40 +1,42 @@
 {
-  "name": "daniyel-menda-04-06-20",
-  "version": "1.0.0",
-  "description": "Simple SPA weather webapp",
-  "main": "main.js",
-  "private": true,
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "cleanup": "node src/utils/cleanup.js public .cache",
-    "dev": "npm run cleanup && parcel src/index.html -d public",
-    "build": "npm run cleanup && parcel build src/index.html -d public",
-    "deploy": "npm run build && firebase deploy"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/DaniyelMe/Daniyel-Menda-04-06-20.git"
-  },
-  "author": "Daniyel Menda",
-  "license": "UNLICENSED",
-  "bugs": {
-    "url": "https://github.com/DaniyelMe/Daniyel-Menda-04-06-20/issues"
-  },
-  "homepage": "https://github.com/DaniyelMe/Daniyel-Menda-04-06-20#readme",
-  "dependencies": {
-    "babel-polyfill": "^6.26.0",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-router-dom": "^5.2.0"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.10.2",
-    "@babel/plugin-transform-runtime": "^7.10.1",
-    "@babel/runtime": "^7.10.2",
-    "@vue/component-compiler-utils": "^3.1.2",
-    "babel-eslint": "^10.1.0",
-    "eslint": "^7.2.0",
-    "less": "^3.11.3",
-    "parcel-bundler": "^1.12.4"
-  }
+	"name": "daniyel-menda-04-06-20",
+	"version": "1.0.0",
+	"description": "Simple SPA weather webapp",
+	"main": "main.js",
+	"private": true,
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"cleanup": "node src/utils/cleanup.js public .cache",
+		"dev": "npm run cleanup && parcel src/index.html -d public",
+		"build": "npm run cleanup && parcel build src/index.html -d public",
+		"deploy": "npm run build && firebase deploy"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/DaniyelMe/Daniyel-Menda-04-06-20.git"
+	},
+	"author": "Daniyel Menda",
+	"license": "UNLICENSED",
+	"bugs": {
+		"url": "https://github.com/DaniyelMe/Daniyel-Menda-04-06-20/issues"
+	},
+	"homepage": "https://github.com/DaniyelMe/Daniyel-Menda-04-06-20#readme",
+	"dependencies": {
+		"babel-polyfill": "^6.26.0",
+		"react": "^16.13.1",
+		"react-dom": "^16.13.1",
+		"react-redux": "^7.2.0",
+		"react-router-dom": "^5.2.0",
+		"redux": "^4.0.5",
+		"redux-persist": "^6.0.0"
+	},
+	"devDependencies": {
+		"@babel/core": "^7.10.2",
+		"@babel/plugin-transform-runtime": "^7.10.1",
+		"@babel/runtime": "^7.10.2",
+		"babel-eslint": "^10.1.0",
+		"eslint": "^7.2.0",
+		"less": "^3.11.3",
+		"parcel-bundler": "^1.12.4"
+	}
 }
