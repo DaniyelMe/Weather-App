@@ -1,19 +1,20 @@
 import React from 'react';
 import tempeConvert from '../utils/tempeConvert.js';
 import { useSelector, useDispatch } from 'react-redux';
+import WeaterIcons from './WeatherIcons';
 
 const CityWeather = ({ fiveDaysForecast }) => {
-	const metric = useSelector(state => state.metric);
-	const favorites = useSelector(state => state.favorites);
-	const favoritesSet = useSelector(state => state.favoritesSet);
-	const currentPosition = useSelector(state => state.currentPosition);
+	const metric = useSelector((state) => state.metric);
+	const favorites = useSelector((state) => state.favorites);
+	const favoritesSet = useSelector((state) => state.favoritesSet);
+	const currentPosition = useSelector((state) => state.currentPosition);
 
 	const dispatch = useDispatch();
 
 	const location = {
 		name: currentPosition.name,
 		country: currentPosition.country.name,
-		key: currentPosition.key
+		key: currentPosition.key,
 	};
 
 	const forecast = (() => {
@@ -29,14 +30,14 @@ const CityWeather = ({ fiveDaysForecast }) => {
 			return {
 				tempMin: max,
 				tempMax: min,
-				phrase: fiveDaysForecast[0].day.IconPhrase
+				phrase: fiveDaysForecast[0].day.IconPhrase,
 			};
 		}
 
 		return {
 			tempMin: '',
 			tempMax: '',
-			phrase: ''
+			phrase: '',
 		};
 	})();
 
@@ -88,6 +89,7 @@ const CityWeather = ({ fiveDaysForecast }) => {
 				</div>
 
 				<div className="main-top-right">
+					<WeaterIcons />
 					<h3>{forecast.phrase}</h3>
 				</div>
 			</div>
