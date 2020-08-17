@@ -1,10 +1,11 @@
+import dates from '../../utils/dates.js';
 import geoApi from '../../utils/geoApi.js';
 import tempeConvert from '../../utils/tempeConvert.js';
-import dates from '../../utils/dates.js';
 
 const state = {
 	position: { latitude: '32.0853', longitude: '34.7818' },
 
+	daysOfWeek: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
 	currentPosition: { name: 'Tel Aviv', key: '215793', country: { name: 'Israel', id: 'IL' } },
 
 	fiveDaysForecast: [],
@@ -114,7 +115,6 @@ const mutations = {
 	},
 
 	addDayOfForcast(state, { forecast, i }) {
-		const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 		const { Temperature, Date, Day, Night, Link, Sun } = forecast;
 
 		// make sure it's celsius
@@ -124,7 +124,7 @@ const mutations = {
 		}
 
 		state.fiveDaysForecast.push({
-			dayName: daysOfWeek[i],
+			dayName: state.daysOfWeek[i],
 			temperature: { max: Temperature.Maximum.Value, min: Temperature.Minimum.Value, type: Temperature.Unit },
 			date: dates.parseDate(Date),
 			day: Day,
