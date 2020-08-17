@@ -2,83 +2,51 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	height: 80px;
+	margin-top: 20px;
+	height: 40px;
 	background: transparent;
+	// background-color: #313444;
 }
 
 .site-header-nav {
 	display: flex;
 	align-items: center;
+	margin-left: 20px;
 
-	ol {
-		display: flex;
-		justify-content: space-between;
-		text-align: center;
-		margin-left: 15px;
+	span {
+		cursor: pointer;
+		color: white;
+		font-size: 28px;
+	}
 
-		li {
-			position: relative;
-			list-style: none;
-
-			a {
-				position: relative;
-				display: inline-block;
-				margin-left: 15px;
-				padding: 12px;
-				box-sizing: border-box;
-				border-radius: 5px;
-				border: 1px solid transparent;
-
-				color: hsla(0, 0%, 100%, 0.5);
-
-				&:hover {
-					color: white;
-					transition: ease-in-out 0.3s;
-
-					&::before {
-						visibility: visible;
-						transform: scaleX(1);
-					}
-				}
-
-				&::before {
-					content: '';
-					position: absolute;
-					width: 100%;
-					height: 2px;
-					bottom: 0;
-					left: 0;
-					background-color: rgba(255, 255, 255, 0.5);
-					visibility: hidden;
-					transform: scaleX(0);
-					transition: all ease-in-out 200ms;
-				}
-			}
-		}
-
-		.active-path {
-			color: white;
-
-			&::before {
-				visibility: visible;
-				transform: scaleX(1);
-			}
-		}
+	h4 {
+		margin-left: 5px;
+		font-weight: 200;
 	}
 }
 
-.logo {
-	margin-left: 15px;
-	display: inline-block;
+.header-menu {
+	color: gray;
+	margin-right: 20px;
 
-	img {
-		display: block;
-		max-width: 60px;
-		min-width: 45px;
-		width: 100%;
+	span {
+		cursor: pointer;
+		color: white;
+		font-size: 28px;
+	}
 
-		&:active {
-			transform: scale(1.05);
+	ol {
+		position: absolute;
+		right: 20px;
+		z-index: 2;
+		background-color: #313444;
+		color: white;
+		width: 10rem;
+		border-radius: 5px;
+
+		li {
+			margin: 5px 0;
+			cursor: pointer;
 		}
 	}
 }
