@@ -1,46 +1,33 @@
 <template>
 	<footer class="site-footer">
-		<div class="toggle toggle--daynight">
-			<input type="checkbox" :checked="theme" id="toggle--daynight" class="toggle--checkbox" @click="toggleTheme" />
-			<label class="toggle--btn" for="toggle--daynight">
-				<span class="toggle--feature"></span>
-			</label>
-		</div>
-
-		<span
-			>Made with ❤️ by <b> Daniyel Menda </b> {{ new Date().getFullYear() }} </span
-		>
-
-		<div class="toggle toggle--degree">
-			<input type="checkbox" :checked="metric" id="toggle--degree" class="toggle--checkbox" @click="toggleMetric" />
-			<label class="toggle--btn" for="toggle--degree">
-				<span class="toggle--feature"></span>
-			</label>
-		</div>
+		<ol>
+			<li
+				v-for="day in daysOfWeek"
+				:key="day"
+				:class="{today: selected === day }"
+				@click="selected = day"
+			>{{day}}</li>
+		</ol>
 	</footer>
 </template>
 
 <script>
 export default {
-	computed: {
-		metric() {
-			return this.$store.state.app.metric;
-		},
-		theme() {
-			return this.$store.state.app.theme;
-		}
+	data() {
+		return {
+			selected: '',
+		};
 	},
-	methods: {
-		toggleTheme() {
-			this.$store.commit('toggleTheme');
+	computed: {
+		daysOfWeek() {
+			const week = this.$store.state.app.daysOfWeek;
+			this.selected = week[new Date().getDay()].substring(0, 2);
 
-			const theme = this.theme ? 'light-mode' : 'dark-mode';
-			document.body.setAttribute('class', theme);
+			return week.map((day) => {
+				return day.substring(0, 2);
+			});
 		},
-		toggleMetric() {
-			this.$store.commit('toggleMetric');
-		}
-	}
+	},
 };
 </script>
 
